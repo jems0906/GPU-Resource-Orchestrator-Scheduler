@@ -35,11 +35,12 @@ services:
       - key: ALLOWED_ORIGINS
         value: '["https://gpu-orchestrator-frontend.onrender.com"]'
 
-  - type: static_site
+  - type: web
     name: gpu-orchestrator-frontend
+    runtime: node
     rootDir: frontend
     buildCommand: npm ci && npm run build
-    staticPublishPath: dist
+    startCommand: npm run preview -- --host 0.0.0.0 --port $PORT
     envVars:
       - key: VITE_API_BASE_URL
         value: https://gpu-orchestrator-backend.onrender.com
@@ -47,7 +48,3 @@ services:
         value: wss://gpu-orchestrator-backend.onrender.com
       - key: VITE_API_KEY
         value: dev-api-key-change-in-production
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
