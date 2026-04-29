@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-surface-900 text-white antialiased;
+  }
+
+  progress {
+    @apply appearance-none overflow-hidden rounded-full bg-surface-700;
+  }
+
+  progress::-webkit-progress-bar {
+    @apply bg-surface-700;
+  }
+
+  progress.job-progress::-webkit-progress-value {
+    @apply bg-primary-500;
+  }
+
+  progress.provider-util::-webkit-progress-value {
+    @apply bg-emerald-500;
+  }
+
+  progress.job-progress::-moz-progress-bar {
+    @apply bg-primary-500;
+  }
+
+  progress.provider-util::-moz-progress-bar {
+    @apply bg-emerald-500;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-surface-800;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-surface-600 rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-surface-500;
+  }
+}
