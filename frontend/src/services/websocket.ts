@@ -6,7 +6,19 @@
 
 type MessageHandler = (data: unknown) => void
 
+function normalizeWsBase(raw: string): string {
+  const trimmed = raw.replace(/\/$/, '')
+  if (trimmed.startsWith('ws://') || trimmed.startsWith('wss://')) return trimmed
+  if (trimmed.startsWith('http://')) return `ws://${trimmed.slice('http://'.length)}`
+  if (trimmed.startsWith('https://')) return `wss://${trimmed.slice('https://'.length)}`
+  return trimmed
+}
+
 function buildWsUrl(path: string): string {
+  const envBase = import.meta.env.VITE_WS_BASE_URL as string | undefined
+  if (envBase) {
+    return `${normalizeWsBase(envBase)}${path}`
+  }
   const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws'
   const host = window.location.host
   return `${protocol}://${host}${path}`

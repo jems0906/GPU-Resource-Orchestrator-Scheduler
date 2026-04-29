@@ -10,7 +10,13 @@ import type {
   CostDataPoint,
 } from '@/types'
 
-const BASE_URL = '/api/v1'
+function normalizeApiBaseUrl(raw: string | undefined): string {
+  if (!raw) return '/api/v1'
+  const trimmed = raw.replace(/\/$/, '')
+  return trimmed.endsWith('/api/v1') ? trimmed : `${trimmed}/api/v1`
+}
+
+const BASE_URL = normalizeApiBaseUrl(import.meta.env.VITE_API_BASE_URL)
 const API_KEY = import.meta.env.VITE_API_KEY || 'dev-api-key-change-in-production'
 
 export const apiClient = axios.create({

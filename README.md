@@ -44,6 +44,32 @@ docker compose up --build -d
 docker compose down
 ```
 
+## Deploy To Render
+
+This repository includes a Render Blueprint file at `render.yaml`.
+
+1. In Render Dashboard, click **New +** -> **Blueprint**.
+2. Select repository: `jems0906/GPU-Resource-Orchestrator-Scheduler`.
+3. Render will create:
+	- PostgreSQL database: `gpu-orchestrator-db`
+	- Redis: `gpu-orchestrator-redis`
+	- Backend web service: `gpu-orchestrator-backend`
+	- Frontend static site: `gpu-orchestrator-frontend`
+4. After first deploy, verify/update these variables if Render URL names differ:
+	- Backend: `ALLOWED_ORIGINS`
+	- Frontend: `VITE_API_BASE_URL`
+	- Frontend: `VITE_WS_BASE_URL`
+
+### Render Notes
+
+- Backend uses Render `DATABASE_URL` and auto-converts `postgres://` to `postgresql+asyncpg://`.
+- Frontend runs as static assets and calls backend via `VITE_API_BASE_URL` and `VITE_WS_BASE_URL`.
+- Use JSON array format for backend CORS origins, for example:
+
+```text
+["https://your-frontend-name.onrender.com"]
+```
+
 ## Local Dev (Without Docker)
 
 ### One-Command Startup (Windows)

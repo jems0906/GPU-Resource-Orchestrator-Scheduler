@@ -1,4 +1,5 @@
 from pydantic_settings import BaseSettings
+from pydantic import field_validator
 from typing import List, Optional
 
 
@@ -64,6 +65,15 @@ class Settings(BaseSettings):
 
     # Metrics retention
     METRICS_RETENTION_HOURS: int = 72
+
+    @field_validator("DATABASE_URL", mode="before")
+    @classmethod
+    def normalize_database_url(cls, value: str) -> str:
+        if isinstance(value, str) and value.startswith("postgres://"):
+            return value.replace("postgres://", "postgresql+asyncpg://", 1)
+        if isinstance(value, str) and value.startswith("postgresql://") and "+asyncpg" not in value:
+            return value.replace("postgresql://", "postgresql+asyncpg://", 1)
+        return value
 
     model_config = {"env_file": ".env", "case_sensitive": True}
 
