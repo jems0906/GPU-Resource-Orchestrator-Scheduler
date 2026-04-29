@@ -35,7 +35,7 @@ services:
       - key: ALLOWED_ORIGINS
         value: '["https://gpu-orchestrator-frontend.onrender.com"]'
 
-  - type: static
+  - type: static_site
     name: gpu-orchestrator-frontend
     rootDir: frontend
     buildCommand: npm ci && npm run build
